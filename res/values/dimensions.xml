@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="boxHeight">44dp</dimen>
+    <dimen name="boxWidth">44dp</dimen>
+    <dimen name="boxPadding">4dp</dimen>
+    <dimen name="boardHeight">354dp</dimen>
+    <dimen name="boardWidth">354dp</dimen>
+</resources>
