@@ -2,63 +2,52 @@ package com.example.chess.logic;
 abstract public class Piece {
 	public static final int BLACK = 0;
 	public static final int WHITE = 1;
-	private int xLocation;
-	private int yLocation;
-	private int color;
+	protected int xPos;
+	protected int yPos;
+	protected final int color;
 	protected boolean hasMoved;
 	protected Board chessBoard;
 
-	public Piece(Board board, int color){
-		this.chessBoard = board;
-		this.color = color;
-		hasMoved = false;
-		xLocation = -1;
-		yLocation = -1;
-	}
-
-	public Piece(Board board, int color, int xLoc, int yLoc){
+	public Piece(Board board, int color, int xPos, int yPos){
 		this.chessBoard = board;
 		this.color = color;
 		this.hasMoved = false;
-		this.xLocation = xLoc;
-		this.yLocation = yLoc;
-
-		chessBoard.placePiece(this, xLoc, yLoc);
+		this.xPos = xPos;
+		this.yPos = yPos;
+		chessBoard.placePiece(this, xPos, yPos);
 	}
 
-	public boolean canMoveTo(int xPosition, int yPosition){
-		return canMoveGenerics(xPosition, yPosition);
+	public boolean canMoveTo(int newXPos, int newYPos){
+		return canMoveGenerics(newXPos, newYPos);
 	}
 
-	protected boolean canMoveGenerics(int xPosition, int yPosition){
-		if (chessBoard.isInBounds(xPosition, yPosition)){
-			Piece location = chessBoard.pieceAt(xPosition, yPosition);
-
-			if (location == null) return true;
-			if (location.getColor() != this.color) return true;
-		}
-		return false;
+	protected boolean canMoveGenerics(int newXPos, int newYPos){
+		if (!chessBoard.isInBounds(newXPos, newYPos))
+			return false;
+		Piece piece = chessBoard.pieceAt(newXPos, newYPos);
+		return (piece == null) || (color != piece.color);
 	}
 
-	public void moveTo(int xPosition, int yPosition){
-			if (chessBoard.pieceAt(xLocation, yLocation) == this)
+	public void moveTo(int newXPos, int newYPos){
+			if (chessBoard.pieceAt(xPos, yPos) == this)
 				chessBoard.removeFromBoard(this);
-			this.xLocation = xPosition;
-			this.yLocation = yPosition;
 
-			Piece target = chessBoard.pieceAt(xPosition, yPosition);
-			if (target != null){
+			xPos = newXPos;
+			yPos = newYPos;
+
+			Piece target = chessBoard.pieceAt(newXPos, newYPos);
+			if (target != null)
 				this.capturePiece(target);
-			}
-			chessBoard.placePiece(this, xPosition, yPosition);
+
+			chessBoard.placePiece(this, newXPos, newYPos);
 			hasMoved = true;
 	}
 
 
 	public void removePiece() {
 		chessBoard.removeFromBoard(this);
-		xLocation = -1;
-		yLocation = -1;
+		xPos = -1;
+		yPos = -1;
 	}
 
 	public void capturePiece(Piece capturedPiece){
@@ -66,96 +55,87 @@ abstract public class Piece {
 	}
 
 	public boolean onBoard(){
-		if (chessBoard.isInBounds(xLocation, yLocation))
-			return true;
-		return false;
+		return chessBoard.isInBounds(xPos, yPos);
 	}
 
 
-	public int getXLocation(){
-		return xLocation;
+	public int getXPos(){
+		return xPos;
 	}
 
-	public int getYLocation(){
-		return yLocation;
+	public int getYPos(){
+		return yPos;
 	}
 
 	public int getColor(){
 		return color;
 	}
 
-	public Board getBoard(){
-		return chessBoard;
-	}
+	protected boolean isMovingStraight(int newXPos, int newYPos) {
+		int start;
+		int end;
 
-	protected boolean isMovingStraight(int xPosition, int yPosition) {
-		int currX = this.getXLocation();
-		int currY = this.getYLocation();
-
-		int smallerVal;
-		int largerVal;
-
-		if (currX == xPosition){
-			if (currY > yPosition){
-				smallerVal = yPosition;
-				largerVal = currY;
+		if (xPos == newXPos){
+			if (yPos > newYPos){
+				start = newYPos;
+				end = yPos;
 			}
-			else if (yPosition > currY){
-				smallerVal = currY;
-				largerVal = yPosition;
+			else if (newYPos > yPos){
+				start = yPos;
+				end = newYPos;
 			}
 			else return false;
 
-			smallerVal++;
-			for(; smallerVal < largerVal; smallerVal++){
-				if (chessBoard.pieceAt(currX, smallerVal) != null){
+			start++;
+			for(; start < end; start++){
+				if (chessBoard.pieceAt(xPos, start) != null){
 					return false;
 				}
 			}
 			return true;
 		}
 
-		if (currY == yPosition){
-			if (currX > xPosition){
-				smallerVal = xPosition;
-				largerVal = currX;
+		if (yPos == newYPos){
+			if (xPos > newXPos){
+				start = newXPos;
+				end = xPos;
 			}
-			else if (xPosition > currX){
-				smallerVal = currX;
-				largerVal = xPosition;
+			else if (newXPos > xPos){
+				start = xPos;
+				end = newXPos;
 			}
 			else return false;
 
-			smallerVal++;
-			for(; smallerVal < largerVal; smallerVal++){
-				if (chessBoard.pieceAt(smallerVal, currY) != null){
+			start++;
+			for(; start < end; start++){
+				if (chessBoard.pieceAt(start, yPos) != null){
 					return false;
 				}
 			}
 			return true;
 		}
-
 		return false;
 	}
 
-	protected boolean isMovingDiagonal(int xPosition, int yPosition) {
-		int xTotal = Math.abs(xPosition - this.getXLocation());
-		int yTotal = Math.abs(yPosition - this.getYLocation());
+	protected boolean isMovingDiagonal(int newXPos, int newYPos) {
+		int xTotal = Math.abs(newXPos - xPos);
+		int yTotal = Math.abs(newYPos - yPos);
 
-		if (xTotal != yTotal) {
+		if (xTotal != yTotal)
 			return false;
-		}
 
 		int x, y;
-		x = xLocation;
-		y = yLocation;
+		x = xPos;
+		y = yPos;
+
 		int deltaX, deltaY;
-		if (xLocation < xPosition)
+
+		if (xPos < newXPos)
 			deltaX = 1;
 		else
 			deltaX = -1;
 
-		if (yLocation < yPosition)
+		if (yPos < newYPos)
 			deltaY = 1;
 		else
 			deltaY = -1;
@@ -163,7 +143,7 @@ abstract public class Piece {
 		x += deltaX;
 		y += deltaY;
 
-		while (x != xPosition && y != yPosition) {
+		while (x != newXPos && y != newYPos) {
 			if (chessBoard.pieceAt(x, y) != null)
 				return false;
 			x += deltaX;

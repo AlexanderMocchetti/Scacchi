@@ -1,48 +1,42 @@
 package com.example.chess.logic;
 public class Pawn extends Piece{
 	
-	public Pawn(Board board, int color, int xLoc, int yLoc){
-		super(board, color, xLoc, yLoc);
+	public Pawn(Board board, int color, int xPos, int yPos) {
+		super(board, color, xPos, yPos);
 	}
-	
-	public boolean canMoveTo(int xPosition, int yPosition){
-		if(canMoveGenerics(xPosition,yPosition)){
-			return pawnMovement(xPosition, yPosition);
+
+	public boolean canMoveTo(int newXPos, int newYPos){
+		if(canMoveGenerics(newXPos,newYPos)){
+			return pawnMovement(newXPos, newYPos);
 		}
 		return false;
 	}
 	
-	private boolean pawnMovement(int xPosition, int yPosition){
-		int one_step;
-		int two_step;
-		Piece target = chessBoard.pieceAt(xPosition, yPosition);
-		
-		if (this.getColor() == BLACK){
-			one_step = -1;
-			two_step = -2;
-		}
-		else{
-			one_step = 1;
-			two_step = 2;
-		}
-		
-		if (yPosition - this.getYLocation() == one_step){
-			if (xPosition == this.getXLocation() && target == null){
-				return true;
-			}
-			if (Math.abs(this.getXLocation() - xPosition) == 1 && target != null){
-				return true;
-			}
+	private boolean pawnMovement(int newXPos, int newYPos){
+		int oneStep, twoStep;
 
+		Piece target = chessBoard.pieceAt(newXPos, newYPos);
+		
+		if (color == BLACK) {
+			oneStep = -1;
+			twoStep = -2;
+		} else {
+			oneStep = 1;
+			twoStep = 2;
 		}
-		else if (!hasMoved){
-			if (yPosition - this.getYLocation() == two_step){
-				if (xPosition == this.getXLocation() && target == null){
-					return true;
-				}
-			}
-		}
+		
+		if (newYPos - yPos == oneStep) {
+			// Movimento
+			if (newXPos == xPos && target == null)
+				return true;
 
+			// Cattura
+			if (Math.abs(xPos - newXPos) == 1 && target != null)
+				return true;
+		}
+		if (!hasMoved && newYPos - yPos == twoStep){
+			return newXPos == xPos && target == null;
+		}
 		return false;
 	}
 }

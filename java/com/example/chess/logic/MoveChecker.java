@@ -14,8 +14,8 @@ public class MoveChecker {
         xLocToBeTested = xLoc;
         yLocToBeTested = yLoc;
         pieceAtNewLocation = chessBoard.pieceAt(xLoc, yLoc);
-        oldXLoc = piece.getXLocation();
-        oldYLoc = piece.getYLocation();
+        oldXLoc = piece.getXPos();
+        oldYLoc = piece.getYPos();
         piece.moveTo(xLoc, yLoc);
     }
 

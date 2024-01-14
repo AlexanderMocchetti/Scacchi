@@ -1,21 +1,20 @@
 package com.example.chess.logic;
 
 public class Queen extends Piece{
-	public Queen(Board board, int color, int xLoc, int yLoc){
-		super(board, color, xLoc, yLoc);
+
+	public Queen(Board board, int color, int xPos, int yPos) {
+		super(board, color, xPos, yPos);
 	}
-	
-	public boolean canMoveTo(int xPosition, int yPosition){
-		if(canMoveGenerics(xPosition,yPosition)){
-			return queenMovement(xPosition, yPosition);
+
+	public boolean canMoveTo(int newXPos, int newYPos){
+		if(canMoveGenerics(newXPos,newYPos)){
+			return queenMovement(newXPos, newYPos);
 		}
 		return false;
 	}
 	
-	private boolean queenMovement(int xPosition, int yPosition){
-		if (isMovingStraight(xPosition, yPosition) ||
-				isMovingDiagonal(xPosition, yPosition))
-				return true;
-		return false;
+	private boolean queenMovement(int newXPos, int newYPos){
+		return isMovingStraight(newXPos, newYPos) ||
+				isMovingDiagonal(newXPos, newYPos);
 	}
 }

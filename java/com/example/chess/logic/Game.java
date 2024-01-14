@@ -28,7 +28,6 @@ public class Game {
 		reset();
 	}
 
-	//TODO: controllare scacco matto al di fuori
 	public boolean updateGame(int oldXLoc, int oldYLoc, int newXLoc, int newYLoc) {
 		Piece piece = chessBoard.pieceAt(oldXLoc, oldYLoc);
 		if (!isLegalMove(piece, newXLoc, newYLoc))
@@ -125,7 +124,6 @@ public class Game {
 		return false;
 	}
 
-	// Se falso può implicare stallo
 	public boolean canMove(int player){
 		int oldX, oldY;
 		Piece target;
@@ -141,8 +139,8 @@ public class Game {
 				for (Piece currentPiece : checkPieces){
 					if (currentPiece.canMoveTo(x, y)){
 						target = chessBoard.pieceAt(x, y);
-						oldX = currentPiece.getXLocation();
-						oldY = currentPiece.getYLocation();
+						oldX = currentPiece.getXPos();
+						oldY = currentPiece.getYPos();
 						
 						currentPiece.moveTo(x, y);
 						
@@ -177,8 +175,8 @@ public class Game {
 			kingInQuestion = whiteKing;
 		}
 		
-		int xKingLoc = kingInQuestion.getXLocation();
-		int yKingLoc = kingInQuestion.getYLocation();
+		int xKingLoc = kingInQuestion.getXPos();
+		int yKingLoc = kingInQuestion.getYPos();
 		
 		for (Piece currentPiece : enemyPieceList){
 			if (currentPiece.canMoveTo(xKingLoc, yKingLoc)){
@@ -256,10 +254,6 @@ public class Game {
 	
 	public int getPlayerTurn(){
 		return currentPlayer;
-	}
-	
-	public void setPlayer(int player){
-		currentPlayer = player;
 	}
 
 	public boolean isGameOver() {

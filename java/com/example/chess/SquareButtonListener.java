@@ -10,9 +10,9 @@ import com.example.chess.logic.Piece;
 
 public class SquareButtonListener implements View.OnClickListener{
     private ImageButton previouslyClickedButton = null;
-    private ImageButton[][] chessBoard;
-    private Game game;
-    private TextView resultBar;
+    private final ImageButton[][] chessBoard;
+    private final Game game;
+    private final TextView resultBar;
     public SquareButtonListener(ImageButton[][] chessBoard, Game game, TextView resultBar) {
         this.chessBoard = chessBoard;
         this.game = game;

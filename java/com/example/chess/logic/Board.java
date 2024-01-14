@@ -1,7 +1,7 @@
 package com.example.chess.logic;
 
 public class Board {
-	private Piece[][] chessBoard;
+	private final Piece[][] chessBoard;
 
 	public Board(Piece[][] chessBoard) {
 		this.chessBoard = chessBoard;
@@ -11,18 +11,14 @@ public class Board {
 	}
 	
 	public boolean isEmptyPosition(int xPosition, int yPosition){
-		if (isInBounds(xPosition, yPosition)){
-			if (chessBoard[xPosition][yPosition] == null)
-				return true;
-		}
+		if (isInBounds(xPosition, yPosition))
+			return chessBoard[xPosition][yPosition] == null;
 		return false;
 	}
 	
 	public boolean isInBounds(int xPosition, int yPosition){
-		if (xPosition < getXDimension() && xPosition >= 0 &&
-				yPosition < getYDimension() && yPosition >= 0)
-			return true;
-		return false;
+		return xPosition < getXDimension() && xPosition >= 0 &&
+				yPosition < getYDimension() && yPosition >= 0;
 	}
 	
 	public Piece pieceAt(int xPosition, int yPosition){
@@ -39,14 +35,10 @@ public class Board {
 	public int getYDimension(){
 		return chessBoard.length;
 	}
-	
-	public Piece[][] getChessBoard(){
-		return chessBoard;
-	}
 
 	public void removeFromBoard(Piece removePiece){
-		int oldXLocation = removePiece.getXLocation();
-		int oldYLocation = removePiece.getYLocation();
+		int oldXLocation = removePiece.getXPos();
+		int oldYLocation = removePiece.getYPos();
 		
 		chessBoard[oldXLocation][oldYLocation] = null;
 	}

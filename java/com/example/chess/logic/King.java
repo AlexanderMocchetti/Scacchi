@@ -1,25 +1,22 @@
 package com.example.chess.logic;
 public class King extends Piece{
-	public King(Board board, int color, int xLoc, int yLoc){
-		super(board, color, xLoc, yLoc);
+
+	public King(Board board, int color, int xPos, int yPos) {
+		super(board, color, xPos, yPos);
 	}
-	
-	public boolean canMoveTo(int xPosition, int yPosition){
-		if(canMoveGenerics(xPosition,yPosition)){
-			return kingMovement(xPosition, yPosition);
-		}
+
+	public boolean canMoveTo(int newXPos, int newYPos){
+		if(canMoveGenerics(newXPos, newYPos))
+			return kingMovement(newXPos, newYPos);
 		return false;
 	}
 	
-	private boolean kingMovement(int xPosition, int yPosition){
-		int absoluteX = Math.abs(xPosition - this.getXLocation());
-		int absoluteY = Math.abs(yPosition - this.getYLocation());
-		
+	private boolean kingMovement(int newXPos, int newYPos){
+		int absoluteX = Math.abs(newXPos - xPos);
+		int absoluteY = Math.abs(newYPos - yPos);
+
 		if (absoluteX <= 1 && absoluteY <= 1){
-			if (absoluteX == 0 && absoluteY == 0){
-				return false;
-			}
-			return true;
+			return absoluteX != 0 || absoluteY != 0;
 		}
 		return false;
 	}
