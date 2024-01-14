@@ -12,6 +12,6 @@ public class Rook extends Piece{
 		return false;
 	}
 	private boolean rookMovement(int newXPos, int newYPos){
-		return isMovingStraight(newXPos, newYPos);
+		return canMoveStraight(newXPos, newYPos);
 	}
 }

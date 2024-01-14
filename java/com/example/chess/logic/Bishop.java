@@ -11,6 +11,6 @@ public class Bishop extends Piece{
 		return false;
 	}
 	private boolean bishopMovement(int newXPos, int newYPos){
-		return isMovingDiagonal(newXPos, newYPos);
+		return canMoveDiagonal(newXPos, newYPos);
 	}
 }

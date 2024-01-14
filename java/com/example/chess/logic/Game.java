@@ -120,7 +120,6 @@ public class Game {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 
@@ -203,43 +202,43 @@ public class Game {
 		else currentPlayer = WHITE;
 	}
 
-	public King addKing(int color, int xloc, int yloc) {
-		King king = new King(chessBoard, color, xloc, yloc);
+	public King addKing(int color, int xPos, int yPos) {
+		King king = new King(chessBoard, color, xPos, yPos);
 		pieceToColorHelper(king, color);
 
 		return king;
 	}
 	
-	public Queen addQueen(int color, int xloc, int yloc){
-		Queen queen = new Queen(chessBoard, color, xloc, yloc);
+	public Queen addQueen(int color, int xPos, int yPos){
+		Queen queen = new Queen(chessBoard, color, xPos, yPos);
 		pieceToColorHelper(queen, color);
 		
 		return queen;
 	}
 	
-	public Knight addKnight(int color, int xloc, int yloc){
-		Knight knight = new Knight(chessBoard, color, xloc, yloc);
+	public Knight addKnight(int color, int xPos, int yPos){
+		Knight knight = new Knight(chessBoard, color, xPos, yPos);
 		pieceToColorHelper(knight, color);
 		
 		return knight;
 	}
 	
-	public Rook addRook(int color, int xloc, int yloc){
-		Rook rook = new Rook(chessBoard, color, xloc, yloc);
+	public Rook addRook(int color, int xPos, int yPos){
+		Rook rook = new Rook(chessBoard, color, xPos, yPos);
 		pieceToColorHelper(rook, color);
 		
 		return rook;
 	}
 	
-	public Bishop addBishop(int color, int xloc, int yloc){
-		Bishop bishop = new Bishop(chessBoard, color, xloc, yloc);
+	public Bishop addBishop(int color, int xPos, int yPos){
+		Bishop bishop = new Bishop(chessBoard, color, xPos, yPos);
 		pieceToColorHelper(bishop, color);
 		
 		return bishop;
 	}
 	
-	public Pawn addPawn(int color, int xloc, int yloc){
-		Pawn pawn = new Pawn(chessBoard, color, xloc, yloc);
+	public Pawn addPawn(int color, int xPos, int yPos){
+		Pawn pawn = new Pawn(chessBoard, color, xPos, yPos);
 		pieceToColorHelper(pawn, color);
 		
 		return pawn;

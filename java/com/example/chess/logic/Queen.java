@@ -14,7 +14,7 @@ public class Queen extends Piece{
 	}
 	
 	private boolean queenMovement(int newXPos, int newYPos){
-		return isMovingStraight(newXPos, newYPos) ||
-				isMovingDiagonal(newXPos, newYPos);
+		return canMoveStraight(newXPos, newYPos) ||
+				canMoveDiagonal(newXPos, newYPos);
 	}
 }

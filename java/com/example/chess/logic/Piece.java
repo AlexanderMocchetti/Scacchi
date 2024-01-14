@@ -71,53 +71,48 @@ abstract public class Piece {
 		return color;
 	}
 
-	protected boolean isMovingStraight(int newXPos, int newYPos) {
-		int start;
-		int end;
+	protected boolean canMoveStraight(int newXPos, int newYPos) {
+		int start, end;
 
-		if (xPos == newXPos){
-			if (yPos > newYPos){
+		if (xPos != newXPos && yPos != newYPos)
+			return false;
+
+		if (xPos == newXPos && yPos == newYPos)
+			return false;
+
+		boolean isRouteVertical = xPos == newXPos;
+
+		if (isRouteVertical) {
+			if (yPos > newYPos) {
 				start = newYPos;
 				end = yPos;
-			}
-			else if (newYPos > yPos){
+			} else {
 				start = yPos;
 				end = newYPos;
 			}
-			else return false;
-
-			start++;
-			for(; start < end; start++){
-				if (chessBoard.pieceAt(xPos, start) != null){
-					return false;
-				}
-			}
-			return true;
-		}
-
-		if (yPos == newYPos){
-			if (xPos > newXPos){
+		} else {
+			if (xPos > newXPos) {
 				start = newXPos;
 				end = xPos;
-			}
-			else if (newXPos > xPos){
+			} else {
 				start = xPos;
 				end = newXPos;
 			}
-			else return false;
-
-			start++;
-			for(; start < end; start++){
-				if (chessBoard.pieceAt(start, yPos) != null){
-					return false;
-				}
-			}
-			return true;
 		}
+
+		for (int square = start + 1; square < end; square++) {
+			if (isRouteVertical)
+				if (chessBoard.pieceAt(xPos, square) == null)
+					return true;
+			else
+				if (chessBoard.pieceAt(square, yPos) == null)
+					return true;
+		}
+
 		return false;
 	}
 
-	protected boolean isMovingDiagonal(int newXPos, int newYPos) {
+	protected boolean canMoveDiagonal(int newXPos, int newYPos) {
 		int xTotal = Math.abs(newXPos - xPos);
 		int yTotal = Math.abs(newYPos - yPos);
 
