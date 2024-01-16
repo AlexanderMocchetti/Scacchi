@@ -43,9 +43,9 @@ public class SquareButtonListener implements View.OnClickListener{
                 message = "Scacco matto, vince " + player;
             else if (game.isStalemate(enemyPlayer))
                 message = "Stallo, non vince nessuno";
+            resultBar.setText(message);
         }
         previouslyClickedButton = null;
-        resultBar.setText(message);
     }
     private void moveImageButton(ImageButton currentButton) {
         Drawable previousDrawable = previouslyClickedButton.getDrawable();

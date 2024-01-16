@@ -1,6 +1,6 @@
 package com.example.chess.logic;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Game {
 	public static final int BLACK = 0;
@@ -15,10 +15,11 @@ public class Game {
 			{'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
 			{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
 	};
+	public static final int defaultNumberOfPieces = 16;
 	private int currentPlayer;
 	private Board chessBoard;
-	private LinkedList<Piece> blackPieces;
-	private LinkedList<Piece> whitePieces;
+	private ArrayList<Piece> blackPieces;
+	private ArrayList<Piece> whitePieces;
 	private King whiteKing, blackKing;
 	private MoveChecker moveChecker;
 	private boolean isGameOver = false;
@@ -40,8 +41,8 @@ public class Game {
 	public void reset() {
 		chessBoard = new Board(8,8);
 		currentPlayer = WHITE;
-		blackPieces = new LinkedList<>();
-		whitePieces = new LinkedList<>();
+		blackPieces = new ArrayList<>(defaultNumberOfPieces);
+		whitePieces = new ArrayList<>(defaultNumberOfPieces);
 		moveChecker = new MoveChecker(chessBoard);
 		setupBoard();
 		isGameOver = false;
@@ -124,36 +125,22 @@ public class Game {
 	}
 
 	public boolean canMove(int player){
-		int oldX, oldY;
-		Piece target;
-		LinkedList<Piece> checkPieces;
-		
+		ArrayList<Piece> checkPieces;
+
 		if (player == BLACK)
 			checkPieces = blackPieces;
 		else
 			checkPieces = whitePieces;
-		
-		for (int x = 0; x < chessBoard.getXDimension(); x++){
-			for (int y = 0; y < chessBoard.getYDimension(); y++){	
-				for (Piece currentPiece : checkPieces){
-					if (currentPiece.canMoveTo(x, y)){
-						target = chessBoard.pieceAt(x, y);
-						oldX = currentPiece.getXPos();
-						oldY = currentPiece.getYPos();
-						
-						currentPiece.moveTo(x, y);
-						
-						if (!isKingInCheck(player)){
-							currentPiece.moveTo(oldX, oldY);
-							if (target != null)
-								target.moveTo(x, y);
-							return true;
-						} else {
-							currentPiece.moveTo(oldX, oldY);
-							if (target != null)
-								target.moveTo(x, y);
-						}
-					}
+
+		for (int x = 0; x < chessBoard.getXDimension(); x++) {
+			for (int y = 0; y < chessBoard.getYDimension(); y++) {
+				for (Piece currentPiece : checkPieces) {
+					if (!currentPiece.canMoveTo(x, y))
+						continue;
+					moveChecker.testMove(currentPiece, x, y);
+					if (!isKingInCheck(player))
+						return true;
+					moveChecker.undoMove();
 				}
 			}
 		}
@@ -163,7 +150,7 @@ public class Game {
 	public boolean isKingInCheck(int color){
 		boolean result = false;
 		
-		LinkedList<Piece> enemyPieceList;
+		ArrayList<Piece> enemyPieceList;
 		King kingInQuestion;
 		
 		if (color == BLACK){

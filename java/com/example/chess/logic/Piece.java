@@ -46,8 +46,6 @@ abstract public class Piece {
 
 	public void removePiece() {
 		chessBoard.removeFromBoard(this);
-		xPos = -1;
-		yPos = -1;
 	}
 
 	public void capturePiece(Piece capturedPiece){
@@ -113,10 +111,10 @@ abstract public class Piece {
 	}
 
 	protected boolean canMoveDiagonal(int newXPos, int newYPos) {
-		int xTotal = Math.abs(newXPos - xPos);
-		int yTotal = Math.abs(newYPos - yPos);
+		int xDiff = Math.abs(newXPos - xPos);
+		int yDiff = Math.abs(newYPos - yPos);
 
-		if (xTotal != yTotal)
+		if (xDiff != yDiff)
 			return false;
 
 		int x, y;
